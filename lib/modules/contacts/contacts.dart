@@ -32,8 +32,15 @@ class _ContactsState extends State<Contacts> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
+          //vai ser o WIDGET que vai ficar ouvindo algum dado, e quando
+          //ele alterar ele vai BUILDAR automaticamente os dados.
           child: ValueListenableBuilder<List<ContactModel>>(
+              //dado que vai ser OUVIDO para ele fazer essa mudança.
               valueListenable: widget.controller.contactsNotifier,
+              // o primeiro parametro é o CONTEXT
+              // segundo parametro e o GET do dado sendo ouvindo 'VALUE NOTIFIER'
+              // o return desse BUILDER e o WIDGET em si.
+              //lembrando que o DADO ouvindo pode ser feito para renderizar os WIDGETS
               builder: (_, contacts, __) => Column(
                     children: contacts
                         .map((e) => Padding(

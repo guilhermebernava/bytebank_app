@@ -1,10 +1,10 @@
-import 'package:bytebank/database/database.dart';
 import 'package:bytebank/shared/models/contactModel.dart';
 import 'package:flutter/cupertino.dart';
+import '../../database/Daos/ContactDao.dart';
 
 class CreateContractController {
   final formKey = GlobalKey<FormState>();
-  final dbContext = DbContext();
+  final contactDao = ContactDao();
 
   String? validateNull(String? value) =>
       value?.isEmpty ?? true ? "O nome não pode ser vazio" : null;
@@ -17,7 +17,7 @@ class CreateContractController {
     final form = formKey.currentState;
 
     if (form!.validate()) {
-      await dbContext.save(model);
+      await contactDao.save(model);
       return true;
     }
     return false;
