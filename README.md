@@ -1,4 +1,4 @@
-<h1 align="center">🏦 BYTE BANK APP 🏦�</h1>
+<h1 align="center">🏦 BYTE BANK APP 🏦</h1>
 
 <p align="center">
   <img src="assets/images/bytebank_logo.png" />
