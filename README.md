@@ -1,12 +1,17 @@
-<h1 align="center">BYTE BANK APP</h1>
+<h1 align="center">🏦 BYTE BANK APP 🏦�</h1>
 
 <p align="center">
   <img src="assets/images/bytebank_logo.png" />
 </p>
-
+ <br>
+  <br>
+   <br>
 <p align="center"> 
   Byte Bank App é um aplicativo desenvolvido para cadastrar contatos, editar, deletar e gerar um arquivo PDF de seus contatos.
  </p>
+ <br>
+  <br>
+   <br>
 
 <h1 align="center" > 🧪 Tecnologias Utilizadas 🧪</h1>
 
