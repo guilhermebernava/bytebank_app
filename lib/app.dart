@@ -1,4 +1,6 @@
-import 'package:bytebank/modules/home_page.dart';
+import 'package:bytebank/modules/home/home_page.dart';
+import 'package:bytebank/modules/splash/splash_page.dart';
+import 'package:bytebank/shared/theme/appColor.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -7,9 +9,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(primaryColor: AppColor.greenLogo),
       title: "Byte Bank",
-      home: const Home(),
-      routes: {"/home": (context) => const Home()},
+      initialRoute: "/splash",
+      routes: {
+        "/home": (context) => const Home(),
+        "/splash": (context) => SplashPage(),
+      },
     );
   }
 }
