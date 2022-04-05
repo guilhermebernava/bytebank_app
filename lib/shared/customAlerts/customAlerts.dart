@@ -1,0 +1,39 @@
+// ignore_for_file: camel_case_types
+
+import 'package:cool_alert/cool_alert.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/appColor.dart';
+
+class customAlerts {
+  Future<dynamic> warningAlert(BuildContext context) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      title: "Ops...",
+      text: "Something went wrong,\nTry Again Please!!",
+      confirmBtnColor: const Color.fromARGB(255, 255, 255, 0),
+      confirmBtnText: "Try Agaian",
+      confirmBtnTextStyle: GoogleFonts.roboto(fontSize: 25),
+      loopAnimation: false,
+      animType: CoolAlertAnimType.scale,
+      backgroundColor: AppColor.background,
+      autoCloseDuration: const Duration(seconds: 4),
+    );
+  }
+
+  Future<dynamic> sucessAlert(BuildContext context) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.success,
+      title: "Sucess",
+      text: "The contact was saved sucessfully !!",
+      confirmBtnColor: AppColor.greenLogo,
+      loopAnimation: false,
+      animType: CoolAlertAnimType.scale,
+      backgroundColor: AppColor.background,
+      autoCloseDuration: const Duration(seconds: 4),
+    );
+  }
+}

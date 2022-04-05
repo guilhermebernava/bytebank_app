@@ -12,9 +12,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  #adiciona o sqflite com o PATH dentro do APP
+  sqflite:
+  path:
 
   cupertino_icons: ^1.0.2
   google_fonts: ^2.1.0
+  cool_alert: ^1.1.0
+  animated_card: ^2.0.0
+  
+  
+  
 
 
 dev_dependencies:
