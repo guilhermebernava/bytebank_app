@@ -1,12 +1,9 @@
 import 'package:bytebank/modules/contactModal/contactModalController.dart';
 import 'package:bytebank/modules/contacts/contactsController.dart';
+import 'package:bytebank/shared/theme/appColor.dart';
 import 'package:bytebank/shared/widgets/contactWidget/contactWidget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../shared/models/contactModel.dart';
-import '../../shared/widgets/inputForm/inputForm.dart';
 
 class Contacts extends StatefulWidget {
   Contacts({Key? key}) : super(key: key);
@@ -46,13 +43,17 @@ class _ContactsState extends State<Contacts> {
           Container(
             width: double.infinity,
             height: 40,
-            color: Colors.white,
+            color: AppColor.background,
             child: Center(
+              //campo de pesquisa
               child: TextField(
+                // quando clicar no ENTER do TECLADO
                 onSubmitted: (value) {
                   widget.controller.getContactByName(nomeController.text);
                 },
+                //vai pegar os dados que for escrito
                 controller: nomeController,
+                //styles para o textField
                 decoration: const InputDecoration(
                   hintText: 'Search for something',
                   prefixIcon: Icon(Icons.search),

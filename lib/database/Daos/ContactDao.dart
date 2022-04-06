@@ -33,8 +33,8 @@ class ContactDao {
 
   Future<List<ContactModel>> findByName(String name) {
     return createDatabase().then(
-      (db) => db
-          .query('contacts', where: "name = ?", whereArgs: [name]).then((maps) {
+      (db) => db.query('contacts',
+          where: "name LIKE ? ", whereArgs: ['%$name%']).then((maps) {
         final contacts = <ContactModel>[];
         for (Map<String, dynamic> map in maps) {
           final contact = ContactModel(
