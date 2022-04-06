@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart' show ValueNotifier, debugPrint;
+import 'package:flutter/material.dart';
 import '../../database/Daos/ContactDao.dart';
 import '../../shared/models/contactModel.dart';
 
@@ -16,6 +16,10 @@ class ContactsController {
     getContracts();
   }
 
+  void redirectToHome(BuildContext context) {
+    Navigator.pushReplacementNamed(context, "/home");
+  }
+
   Future<void> getContracts() async {
     try {
       //busca os dados no banco de dados.
@@ -25,5 +29,10 @@ class ContactsController {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  Future<void> getContactByName(String name) async {
+    final result = await contactDao.findByName(name);
+    contacts = result;
   }
 }

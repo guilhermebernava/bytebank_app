@@ -31,6 +31,25 @@ class ContactDao {
     );
   }
 
+  Future<List<ContactModel>> findByName(String name) {
+    return createDatabase().then(
+      (db) => db
+          .query('contacts', where: "name = ?", whereArgs: [name]).then((maps) {
+        final contacts = <ContactModel>[];
+        for (Map<String, dynamic> map in maps) {
+          final contact = ContactModel(
+            id: map['id'],
+            age: map['age'],
+            name: map['name'],
+            telephone: map['telephone'],
+          );
+          contacts.add(contact);
+        }
+        return contacts;
+      }),
+    );
+  }
+
   Future<int> delete(ContactModel model) async {
     final db = await createDatabase();
     final res =

@@ -1,9 +1,12 @@
+import 'package:bytebank/modules/contactModal/contactModalController.dart';
 import 'package:bytebank/modules/contacts/contactsController.dart';
 import 'package:bytebank/shared/widgets/contactWidget/contactWidget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../shared/models/contactModel.dart';
+import '../../shared/widgets/inputForm/inputForm.dart';
 
 class Contacts extends StatefulWidget {
   Contacts({Key? key}) : super(key: key);
@@ -14,20 +17,49 @@ class Contacts extends StatefulWidget {
 }
 
 class _ContactsState extends State<Contacts> {
+  final controller = ContactModalController();
+
+  final nomeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 85.0),
-          child: Text("Contacts",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.roboto(fontSize: 22)),
-        ),
-        leading: BackButton(onPressed: () {
-          Navigator.pushReplacementNamed(context, "/home");
-        }),
+        title: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              BackButton(
+                onPressed: () => widget.controller.redirectToHome(context),
+              ),
+              const Text("Contacts"),
+              IconButton(
+                  onPressed: () {
+                    widget.controller.getContracts();
+                  },
+                  icon: const Icon(Icons.refresh))
+            ],
+          ),
+          Container(
+            width: double.infinity,
+            height: 40,
+            color: Colors.white,
+            child: Center(
+              child: TextField(
+                onSubmitted: (value) {
+                  widget.controller.getContactByName(nomeController.text);
+                },
+                controller: nomeController,
+                decoration: const InputDecoration(
+                  hintText: 'Search for something',
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
+            ),
+          ),
+        ]),
       ),
       body: SingleChildScrollView(
         child: Padding(
