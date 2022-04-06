@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:bytebank/modules/home/homeController.dart';
 import 'package:bytebank/shared/theme/appImages.dart';
 import 'package:bytebank/shared/widgets/homeButton/homeButton.dart';
@@ -33,22 +34,34 @@ class Home extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(AppImages.bytebankLogo),
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              curve: Curves.easeInOutBack,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(AppImages.bytebankLogo),
+              ),
             ),
             Row(
               children: [
-                HomeButton(
-                    redirectFunction: () =>
-                        controller.redirectToCreateContact(context),
-                    name: "Create Contact",
-                    icon: Icons.person_add),
-                HomeButton(
-                    redirectFunction: () =>
-                        controller.redirectToContacts(context),
-                    name: "Contacts",
-                    icon: Icons.people),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.bottom,
+                  curve: Curves.easeInOutBack,
+                  child: HomeButton(
+                      redirectFunction: () =>
+                          controller.redirectToCreateContact(context),
+                      name: "Create Contact",
+                      icon: Icons.person_add),
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.bottom,
+                  curve: Curves.easeInOutBack,
+                  child: HomeButton(
+                      redirectFunction: () =>
+                          controller.redirectToContacts(context),
+                      name: "Contacts",
+                      icon: Icons.people),
+                ),
               ],
             )
           ],

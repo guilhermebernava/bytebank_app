@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:bytebank/modules/createContact/createContactController.dart';
 import 'package:bytebank/shared/customAlerts/customAlerts.dart';
 import 'package:bytebank/shared/models/contactModel.dart';
@@ -70,38 +71,42 @@ class _CreateContactState extends State<CreateContact> {
                 ),
               ]),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 100.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CommonButton(
-                      onPressed: () => controller.redirectToHome(context),
-                      text: "Cancel",
-                      color: Colors.red,
-                      textColor: Colors.white),
-                  CommonButton(
-                      onPressed: () async {
-                        final response = await controller.create(
-                            context,
-                            ContactModel(
-                                id: 0,
-                                name: nomeController.text,
-                                telephone: numeroController.text,
-                                age: int.tryParse(idadeController.text)!));
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              curve: Curves.easeInOutBack,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 100.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CommonButton(
+                        onPressed: () => controller.redirectToHome(context),
+                        text: "Cancel",
+                        color: Colors.red,
+                        textColor: Colors.white),
+                    CommonButton(
+                        onPressed: () async {
+                          final response = await controller.create(
+                              context,
+                              ContactModel(
+                                  id: 0,
+                                  name: nomeController.text,
+                                  telephone: numeroController.text,
+                                  age: int.tryParse(idadeController.text)!));
 
-                        if (response == false) {
-                          await widget.alerts.warningAlert(context);
-                          return;
-                        }
+                          if (response == false) {
+                            await widget.alerts.warningAlert(context);
+                            return;
+                          }
 
-                        await widget.alerts.sucessAlert(context);
-                        controller.redirectToHome(context);
-                      },
-                      text: "Register",
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white),
-                ],
+                          await widget.alerts.sucessAlert(context);
+                          controller.redirectToHome(context);
+                        },
+                        text: "Register",
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white),
+                  ],
+                ),
               ),
             )
           ],

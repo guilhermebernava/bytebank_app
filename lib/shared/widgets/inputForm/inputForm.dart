@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,44 +20,48 @@ class InputForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            TextFormField(
-                controller: controller,
-                validator: validator,
-                keyboardType: keyboardType,
-                style: GoogleFonts.roboto(fontSize: 25),
-                decoration: InputDecoration(
-                    labelText: placeholder,
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                    labelStyle: GoogleFonts.roboto(fontSize: 17),
-                    icon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Icon(
-                              icon,
-                              size: 35,
-                            )),
-                        Container(
-                          width: 1,
-                          height: 48,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ))),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Colors.grey,
-            )
-          ],
+    return AnimatedCard(
+      direction: AnimatedCardDirection.right,
+      curve: Curves.easeInOutBack,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            children: [
+              TextFormField(
+                  controller: controller,
+                  validator: validator,
+                  keyboardType: keyboardType,
+                  style: GoogleFonts.roboto(fontSize: 25),
+                  decoration: InputDecoration(
+                      labelText: placeholder,
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                      labelStyle: GoogleFonts.roboto(fontSize: 17),
+                      icon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Icon(
+                                icon,
+                                size: 35,
+                              )),
+                          Container(
+                            width: 1,
+                            height: 48,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ))),
+              const Divider(
+                height: 1,
+                thickness: 1,
+                color: Colors.grey,
+              )
+            ],
+          ),
         ),
       ),
     );

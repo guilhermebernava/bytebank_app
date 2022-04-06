@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:bytebank/modules/contactModal/contactModalController.dart';
 import 'package:bytebank/modules/contacts/contactsController.dart';
 import 'package:bytebank/shared/theme/appColor.dart';
@@ -79,7 +80,10 @@ class _ContactsState extends State<Contacts> {
                     children: contacts
                         .map((e) => Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: ContactWidget(model: e),
+                              child: AnimatedCard(
+                                  direction: AnimatedCardDirection.left,
+                                  curve: Curves.fastOutSlowIn,
+                                  child: ContactWidget(model: e)),
                             ))
                         .toList()
                         .reversed
