@@ -38,6 +38,7 @@ class _ContactsState extends State<Contacts> {
               IconButton(
                   onPressed: () {
                     widget.controller.getContracts();
+                    nomeController.clear();
                   },
                   icon: const Icon(Icons.refresh))
             ],
