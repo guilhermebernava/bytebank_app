@@ -6,7 +6,8 @@ class ContactDao {
       'id INTEGER PRIMARY KEY, '
       'name TEXT, '
       'telephone TEXT,'
-      'age INTEGER)';
+      'age INTEGER,'
+      'account_number INTEGER)';
 
   // ignore: non_constant_identifier_names
   Future<int> save(ContactModel model) {
@@ -19,11 +20,11 @@ class ContactDao {
         final contacts = <ContactModel>[];
         for (Map<String, dynamic> map in maps) {
           final contact = ContactModel(
-            id: map['id'],
-            age: map['age'],
-            name: map['name'],
-            telephone: map['telephone'],
-          );
+              id: map['id'],
+              age: map['age'],
+              name: map['name'],
+              telephone: map['telephone'],
+              accountNumber: map['account_number']);
           contacts.add(contact);
         }
         return contacts;
@@ -38,11 +39,31 @@ class ContactDao {
         final contacts = <ContactModel>[];
         for (Map<String, dynamic> map in maps) {
           final contact = ContactModel(
-            id: map['id'],
-            age: map['age'],
-            name: map['name'],
-            telephone: map['telephone'],
-          );
+              id: map['id'],
+              age: map['age'],
+              name: map['name'],
+              telephone: map['telephone'],
+              accountNumber: map['account_number']);
+          contacts.add(contact);
+        }
+        return contacts;
+      }),
+    );
+  }
+
+  Future<List<ContactModel>> findByAccountNumber(int accountNumber) {
+    return createDatabase().then(
+      (db) => db.query('contacts',
+          where: "account_number = ? ",
+          whereArgs: [accountNumber]).then((maps) {
+        final contacts = <ContactModel>[];
+        for (Map<String, dynamic> map in maps) {
+          final contact = ContactModel(
+              id: map['id'],
+              age: map['age'],
+              name: map['name'],
+              telephone: map['telephone'],
+              accountNumber: map['account_number']);
           contacts.add(contact);
         }
         return contacts;

@@ -7,18 +7,22 @@ class ContactModel {
   final String name;
   final String telephone;
   final int age;
+  final int accountNumber;
 
-  ContactModel(
-      {this.id = 0,
-      required this.name,
-      required this.telephone,
-      required this.age});
+  ContactModel({
+    this.id = 0,
+    required this.name,
+    required this.telephone,
+    required this.age,
+    required this.accountNumber,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       "name": name,
       "telephone": telephone,
       "age": age,
+      "account_number": accountNumber,
     };
   }
 
@@ -28,6 +32,7 @@ class ContactModel {
       name: map['name'],
       telephone: map['telephone'],
       age: map['age'],
+      accountNumber: map['account_number'],
     );
   }
 

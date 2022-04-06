@@ -8,4 +8,8 @@ class HomeController {
   void redirectToContacts(BuildContext context) {
     Navigator.pushReplacementNamed(context, "/contacts");
   }
+
+  void redirectToTransactions(BuildContext context) {
+    Navigator.pushReplacementNamed(context, "/transactions");
+  }
 }

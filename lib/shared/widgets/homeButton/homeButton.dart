@@ -4,11 +4,14 @@ class HomeButton extends StatefulWidget {
   final void Function() redirectFunction;
   final String name;
   final IconData icon;
+  final double width;
+
   const HomeButton({
     Key? key,
     required this.redirectFunction,
     required this.name,
     required this.icon,
+    this.width = 0,
   }) : super(key: key);
 
   @override
@@ -22,7 +25,7 @@ class _HomeButtonState extends State<HomeButton> {
       padding: const EdgeInsets.all(8),
       child: Container(
         padding: const EdgeInsets.all(20),
-        width: 180,
+        width: widget.width != 0 ? widget.width : 180,
         color: Theme.of(context).primaryColor,
         child: Material(
           color: Theme.of(context).primaryColor,

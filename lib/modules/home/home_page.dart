@@ -45,8 +45,8 @@ class Home extends StatelessWidget {
             Row(
               children: [
                 AnimatedCard(
-                  direction: AnimatedCardDirection.bottom,
-                  curve: Curves.easeInOutBack,
+                  direction: AnimatedCardDirection.left,
+                  curve: Curves.ease,
                   child: HomeButton(
                       redirectFunction: () =>
                           controller.redirectToCreateContact(context),
@@ -54,8 +54,8 @@ class Home extends StatelessWidget {
                       icon: Icons.person_add),
                 ),
                 AnimatedCard(
-                  direction: AnimatedCardDirection.bottom,
-                  curve: Curves.easeInOutBack,
+                  direction: AnimatedCardDirection.right,
+                  curve: Curves.ease,
                   child: HomeButton(
                       redirectFunction: () =>
                           controller.redirectToContacts(context),
@@ -63,7 +63,17 @@ class Home extends StatelessWidget {
                       icon: Icons.people),
                 ),
               ],
-            )
+            ),
+            AnimatedCard(
+              direction: AnimatedCardDirection.bottom,
+              curve: Curves.ease,
+              child: HomeButton(
+                  width: double.maxFinite,
+                  redirectFunction: () =>
+                      controller..redirectToTransactions(context),
+                  name: "Transactions",
+                  icon: Icons.monetization_on),
+            ),
           ],
         ),
       ),

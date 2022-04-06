@@ -11,9 +11,13 @@ Future<Database> createDatabase() {
     // tanto ANDROID como IOS
     final String path = join(dbPath, 'bytebank.db');
     // cria o banco de dados com esse caminho
-    return openDatabase(path, onCreate: (db, version) {
-      //cria uma TABELA no banco de dados
-      db.execute(contact.tableSql);
-    }, version: 1);
+    return openDatabase(
+      path,
+      onCreate: (db, version) {
+        //cria uma TABELA no banco de dados
+        db.execute(contact.tableSql);
+      },
+      version: 2,
+    );
   });
 }

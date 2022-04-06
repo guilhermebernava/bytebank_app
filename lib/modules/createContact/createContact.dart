@@ -19,6 +19,7 @@ class CreateContact extends StatefulWidget {
 
 class _CreateContactState extends State<CreateContact> {
   final nomeController = TextEditingController();
+  final accountController = TextEditingController();
   final idadeController = TextEditingController();
   final numeroController = TextEditingController();
 
@@ -58,6 +59,13 @@ class _CreateContactState extends State<CreateContact> {
                 InputForm(
                   keyboardType: TextInputType.datetime,
                   validator: controller.validateNull,
+                  controller: accountController,
+                  icon: Icons.numbers,
+                  placeholder: "Account Number",
+                ),
+                InputForm(
+                  keyboardType: TextInputType.number,
+                  validator: controller.validateNull,
                   controller: idadeController,
                   icon: Icons.date_range_rounded,
                   placeholder: "Age of Contact",
@@ -91,6 +99,8 @@ class _CreateContactState extends State<CreateContact> {
                               ContactModel(
                                   id: 0,
                                   name: nomeController.text,
+                                  accountNumber:
+                                      int.tryParse(accountController.text)!,
                                   telephone: numeroController.text,
                                   age: int.tryParse(idadeController.text)!));
 

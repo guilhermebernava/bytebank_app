@@ -24,12 +24,14 @@ class _ContactModalState extends State<ContactModal> {
   final controller = ContactModalController();
 
   final nomeController = TextEditingController();
+  final accountController = TextEditingController();
   final idadeController = TextEditingController();
   final numeroController = TextEditingController();
 
   @override
   void initState() {
     nomeController.text = widget.model.name;
+    accountController.text = widget.model.accountNumber.toString();
     idadeController.text = widget.model.age.toString();
     numeroController.text = widget.model.telephone;
     super.initState();
@@ -58,6 +60,13 @@ class _ContactModalState extends State<ContactModal> {
                   controller: nomeController,
                   icon: Icons.person,
                   placeholder: "Name of Contact",
+                ),
+                InputForm(
+                  keyboardType: TextInputType.datetime,
+                  validator: controller.validateNull,
+                  controller: accountController,
+                  icon: Icons.numbers,
+                  placeholder: "Account Number",
                 ),
                 InputForm(
                   keyboardType: TextInputType.datetime,
@@ -93,6 +102,8 @@ class _ContactModalState extends State<ContactModal> {
                             context,
                             ContactModel(
                                 id: widget.model.id,
+                                accountNumber:
+                                    int.tryParse(accountController.text)!,
                                 name: nomeController.text,
                                 telephone: numeroController.text,
                                 age: int.tryParse(idadeController.text)!));
