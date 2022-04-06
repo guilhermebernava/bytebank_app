@@ -30,4 +30,20 @@ class ContactDao {
       }),
     );
   }
+
+  Future<int> delete(ContactModel model) async {
+    final db = await createDatabase();
+    final res =
+        await db.delete('contacts', where: "id = ?", whereArgs: [model.id]);
+
+    return res;
+  }
+
+  Future<int> update(ContactModel model) async {
+    final db = await createDatabase();
+    final res = await db.update('contacts', model.toMap(),
+        where: "id = ?", whereArgs: [model.id]);
+
+    return res;
+  }
 }

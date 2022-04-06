@@ -1,6 +1,8 @@
+import 'package:bytebank/modules/contactModal/contactModal.dart';
 import 'package:bytebank/modules/createContact/createContact.dart';
 import 'package:bytebank/modules/home/home_page.dart';
 import 'package:bytebank/modules/splash/splash_page.dart';
+import 'package:bytebank/shared/models/contactModel.dart';
 import 'package:flutter/material.dart';
 
 import 'modules/contacts/contacts.dart';
@@ -24,6 +26,9 @@ class App extends StatelessWidget {
         "/splash": (context) => SplashPage(),
         "/createContact": (context) => CreateContact(),
         "/contacts": (context) => Contacts(),
+        "/contactModal": ((context) => ContactModal(
+              model: ModalRoute.of(context)!.settings.arguments as ContactModel,
+            )),
       },
     );
   }
