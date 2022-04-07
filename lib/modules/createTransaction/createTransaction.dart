@@ -1,5 +1,6 @@
 import 'package:animated_card/animated_card.dart';
 import 'package:bytebank/modules/createTransaction/createTransactionController.dart';
+import 'package:bytebank/shared/customAlerts/customAlerts.dart';
 import 'package:bytebank/shared/models/contactModel.dart';
 import 'package:bytebank/shared/widgets/commonButton/commonButton.dart';
 import 'package:bytebank/shared/widgets/inputForm/inputForm.dart';
@@ -12,6 +13,7 @@ class CreateTransaction extends StatefulWidget {
   CreateTransaction({Key? key, required this.model}) : super(key: key);
 
   final controller = CreateTransactionController();
+  final alerts = customAlerts();
 
   @override
   State<CreateTransaction> createState() => _CreateTransactionState();
@@ -51,42 +53,57 @@ class _CreateTransactionState extends State<CreateTransaction> {
               ]),
             ),
             AnimatedCard(
-              direction: AnimatedCardDirection.left,
+              direction: AnimatedCardDirection.bottom,
               curve: Curves.easeInOutBack,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 100.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CommonButton(
-                        onPressed: () =>
-                            widget.controller.redirectToContacts(context),
-                        text: "Cancel",
-                        color: Colors.red,
-                        textColor: Colors.white),
-                    CommonButton(
-                        onPressed: () async {
-                          //renderiza na tela algum WIDGET
-                          showDialog(
-                              //contexto do componente
-                              context: context,
-                              //function que o RETURN dela e um WIDGET que vai ser
-                              //renderizado em tela
-                              builder: (builder) =>
-                                  //essa FUNCTION traz um CALLBACK que tem o valor de dentro do
-                                  //widget e faz a gente ter acesso a ele
-                                  TransactionAuth(onSend: (password) async {
-                                    await widget.controller.create(
-                                        double.tryParse(valueController.text)!,
-                                        widget.model.accountNumber,
-                                        context,
-                                        password);
-                                    return;
-                                  }));
-                        },
-                        text: "Register",
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white),
+                    AnimatedCard(
+                      direction: AnimatedCardDirection.left,
+                      curve: Curves.easeIn,
+                      child: CommonButton(
+                          onPressed: () =>
+                              widget.controller.redirectToContacts(context),
+                          text: "Cancel",
+                          color: Colors.red,
+                          textColor: Colors.white),
+                    ),
+                    AnimatedCard(
+                      direction: AnimatedCardDirection.right,
+                      curve: Curves.easeIn,
+                      child: CommonButton(
+                          onPressed: () async {
+                            final res = widget.controller.create();
+                            if (res == false) {
+                              widget.alerts.warningAlert(context);
+                              return;
+                            }
+
+                            //renderiza na tela algum WIDGET
+                            showDialog(
+                                //contexto do componente
+                                context: context,
+                                //function que o RETURN dela e um WIDGET que vai ser
+                                //renderizado em tela
+                                builder: (builder) =>
+
+                                    //essa FUNCTION traz um CALLBACK que tem o valor de dentro do
+                                    //widget e faz a gente ter acesso a ele
+                                    TransactionAuth(onSend: (password) async {
+                                      await widget.controller.save(
+                                          double.tryParse(
+                                              valueController.text)!,
+                                          widget.model.accountNumber,
+                                          context,
+                                          password);
+                                    }));
+                          },
+                          text: "Register",
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white),
+                    ),
                   ],
                 ),
               ),

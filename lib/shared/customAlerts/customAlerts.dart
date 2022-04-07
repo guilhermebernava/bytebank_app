@@ -14,12 +14,11 @@ class customAlerts {
       title: "Ops...",
       text: "Something went wrong,\nTry Again Please!!",
       confirmBtnColor: const Color.fromARGB(255, 255, 255, 0),
-      confirmBtnText: "Try Agaian",
+      confirmBtnText: "Try Again",
       confirmBtnTextStyle: GoogleFonts.roboto(fontSize: 25),
       loopAnimation: false,
       animType: CoolAlertAnimType.scale,
       backgroundColor: AppColor.background,
-      autoCloseDuration: const Duration(seconds: 4),
     );
   }
 

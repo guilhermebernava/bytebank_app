@@ -1,9 +1,12 @@
+import 'package:bytebank/shared/widgets/transactionAuth/transactionAuthController.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TransactionAuth extends StatefulWidget {
   final Function(String password) onSend;
-  const TransactionAuth({Key? key, required this.onSend}) : super(key: key);
+  TransactionAuth({Key? key, required this.onSend}) : super(key: key);
+
+  final controller = TransactionAuthController();
 
   @override
   State<TransactionAuth> createState() => _TransactionAuthState();
@@ -20,14 +23,18 @@ class _TransactionAuthState extends State<TransactionAuth> {
         textAlign: TextAlign.center,
         style: GoogleFonts.roboto(fontSize: 25),
       ),
-      content: TextField(
-        controller: passwordController,
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        maxLength: 4,
-        decoration: const InputDecoration(border: OutlineInputBorder()),
-        style: GoogleFonts.roboto(fontSize: 65, letterSpacing: 24),
-        obscureText: true,
+      content: Form(
+        key: widget.controller.formKey,
+        child: TextFormField(
+          controller: passwordController,
+          validator: widget.controller.validateNull,
+          keyboardType: TextInputType.number,
+          textAlign: TextAlign.center,
+          maxLength: 4,
+          decoration: const InputDecoration(border: OutlineInputBorder()),
+          style: GoogleFonts.roboto(fontSize: 65, letterSpacing: 24),
+          obscureText: true,
+        ),
       ),
       actions: [
         TextButton(
@@ -42,6 +49,10 @@ class _TransactionAuthState extends State<TransactionAuth> {
         ),
         TextButton(
           onPressed: () async {
+            final res = widget.controller.create(context);
+            if (res == false) {
+              return;
+            }
             await widget.onSend(passwordController.text);
             Navigator.pushReplacementNamed(context, "/transactions");
           },
