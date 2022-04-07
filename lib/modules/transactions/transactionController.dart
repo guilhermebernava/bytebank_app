@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bytebank/Api/TransactionsInterception.dart';
@@ -26,7 +27,7 @@ class TransactionController {
     getTransactions();
   }
 
-  Future<void> getTransactions() async {
+  Future<List<TransactionModel>> getTransactions() async {
     //faz a REQUEST dos dados atraves do GET
     try {
       //precisa passar a URI do ENDPOINT
@@ -65,9 +66,10 @@ class TransactionController {
         listTransactions.add(transaction);
       }
       //adiciona no NOTIFIER
-      transactions = listTransactions;
+      return listTransactions;
     } catch (e) {
-      print(e);
+      final list = <TransactionModel>[];
+      return list;
     }
   }
 }
