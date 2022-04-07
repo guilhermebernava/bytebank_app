@@ -22,22 +22,29 @@ class TransactionController {
   }
 
   Future<void> getTransactions() async {
-    //faz o GET dos dados
+    //faz a REQUEST dos dados atraves do GET
     final response =
-        await get(Uri.parse("http://192.168.15.26:8080/transactions"));
+        //precisa passar a URI do ENDPOINT
+        //pode se passar HEADERS tambem igualmente ao POST
+        //  NAO POSSUI BODY
+        await get(Uri.parse("http://192.168.15.26:8080/transactions"))
+            .timeout(const Duration(seconds: 20));
 
-    //transforma o JSON em MAP
-    final List<dynamic> decodedJson = jsonDecode(response.body);
+    //cria uma lista de MAP da resposta do GET
+    //map e igualmente um JSON de CHAVE VALOR 0
+    final List<Map<String, dynamic>> decodedJson = jsonDecode(response.body);
 
     //lista de TRANSASCTIONS
     List<TransactionModel> listTransactions = <TransactionModel>[];
 
     //para cada ITEM do MAP que foi criada apartir do JSON
     for (Map<String, dynamic> transactionJson in decodedJson) {
-      //pega o contact dentro do JSON
+      //pega o contact dentro do JSON por meio da KEY dele dentro do dado que
+      //esta rodando o MAP
       final Map<String, dynamic> contactJson = transactionJson['contact'];
 
-      //cria uma nova com o MAP
+      //cria uma nova transaction a partir do MAP atual
+      //pegando os valores por KEY/CHAVE
       final TransactionModel transaction = TransactionModel(
         value: transactionJson['value'],
         contact: ContactModel(
@@ -48,8 +55,11 @@ class TransactionController {
           telephone: "",
         ),
       );
+      //adiciona na lista de transactions
       listTransactions.add(transaction);
     }
+
+    //adiciona no NOTIFIER
     transactions = listTransactions;
   }
 }
