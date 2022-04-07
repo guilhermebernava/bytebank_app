@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bytebank/Api/TransactionsInterception.dart';
 import 'package:bytebank/shared/models/transactionModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -7,7 +8,9 @@ import 'package:http/http.dart';
 import '../../shared/models/contactModel.dart';
 
 class TransactionController {
-  late final transactionsNotifier =
+  final Client client = TransactionInterceptor().client;
+
+  final transactionsNotifier =
       ValueNotifier<List<TransactionModel>>(<TransactionModel>[]);
   List<TransactionModel> get transactions => transactionsNotifier.value;
   set transactions(List<TransactionModel> value) =>
@@ -27,8 +30,9 @@ class TransactionController {
         //precisa passar a URI do ENDPOINT
         //pode se passar HEADERS tambem igualmente ao POST
         //  NAO POSSUI BODY
-        await get(Uri.parse("http://192.168.15.26:8080/transactions"))
-            .timeout(const Duration(seconds: 20));
+        await client
+            .get(Uri.parse("http://192.168.15.26:8080/transactions"))
+            .timeout(const Duration(seconds: 5));
 
     //cria uma lista de MAP da resposta do GET
     //map e igualmente um JSON de CHAVE VALOR 0
@@ -58,6 +62,8 @@ class TransactionController {
       //adiciona na lista de transactions
       listTransactions.add(transaction);
     }
+
+    print(response);
 
     //adiciona no NOTIFIER
     transactions = listTransactions;

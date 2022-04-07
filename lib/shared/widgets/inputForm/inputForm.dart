@@ -42,8 +42,9 @@ class InputForm extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                              ),
                               child: Icon(
                                 icon,
                                 size: 35,
@@ -55,10 +56,13 @@ class InputForm extends StatelessWidget {
                           )
                         ],
                       ))),
-              const Divider(
-                height: 1,
-                thickness: 1,
-                color: Colors.grey,
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
               )
             ],
           ),

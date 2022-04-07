@@ -3,6 +3,7 @@ import 'package:bytebank/modules/createTransaction/createTransactionController.d
 import 'package:bytebank/shared/models/contactModel.dart';
 import 'package:bytebank/shared/widgets/commonButton/commonButton.dart';
 import 'package:bytebank/shared/widgets/inputForm/inputForm.dart';
+import 'package:bytebank/shared/widgets/transactionAuth/transactionAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -65,10 +66,23 @@ class _CreateTransactionState extends State<CreateTransaction> {
                         textColor: Colors.white),
                     CommonButton(
                         onPressed: () async {
-                          await widget.controller.create(
-                              double.tryParse(valueController.text)!,
-                              widget.model.accountNumber,
-                              context);
+                          //renderiza na tela algum WIDGET
+                          showDialog(
+                              //contexto do componente
+                              context: context,
+                              //function que o RETURN dela e um WIDGET que vai ser
+                              //renderizado em tela
+                              builder: (builder) =>
+                                  //essa FUNCTION traz um CALLBACK que tem o valor de dentro do
+                                  //widget e faz a gente ter acesso a ele
+                                  TransactionAuth(onSend: (password) async {
+                                    await widget.controller.create(
+                                        double.tryParse(valueController.text)!,
+                                        widget.model.accountNumber,
+                                        context,
+                                        password);
+                                    return;
+                                  }));
                         },
                         text: "Register",
                         color: Theme.of(context).primaryColor,
