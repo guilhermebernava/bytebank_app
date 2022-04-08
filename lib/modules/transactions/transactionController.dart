@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bytebank/Api/TransactionsInterception.dart';
 import 'package:bytebank/shared/customAlerts/customAlerts.dart';
 import 'package:bytebank/shared/models/transactionModel.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
@@ -14,7 +15,7 @@ class TransactionController {
   final alerts = customAlerts();
   Client client = InterceptedClient.build(
     interceptors: [TransactionInterceptor()],
-    requestTimeout: const Duration(seconds: 10),
+    requestTimeout: const Duration(seconds: 5),
   );
 
   final transactionsNotifier =
@@ -41,6 +42,15 @@ class TransactionController {
           await client.get(Uri.parse("http://192.168.15.26:8080/transactions"))
               //capturamos os erros que tiverem dentro dessa FUTURE
               .catchError((e) {
+        //se tiver habilitado o Crashlytics ele vai rodar o CODIGO.
+        if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+          FirebaseCrashlytics.instance.setCustomKey("EXPECTION", e.toString());
+          FirebaseCrashlytics.instance
+              .setCustomKey("HTTP_STATUSCODE", e.statusCode);
+          FirebaseCrashlytics.instance.setCustomKey("HTTP_BODY", "METHOD_GET");
+          FirebaseCrashlytics.instance.recordError(e, null);
+        }
+
         //aqui fazemos algo quando capturamos o erro
         //nesse caso mandamos uma mensagem de erro na tela
         alerts.errorAlert(context, e.message);

@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html';
-
 import 'package:bytebank/Api/TransactionsInterception.dart';
 import 'package:bytebank/database/Daos/ContactDao.dart';
 import 'package:bytebank/shared/models/transactionModel.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
-
 import '../../shared/customAlerts/customAlerts.dart';
 
 class CreateTransactionController {
@@ -56,10 +54,30 @@ class CreateTransactionController {
         'password': password
       },
     ).catchError((e) {
+      //KEYS que serao ENVIADAS juntos com o RECORD do error
+      //elas aceitam um KEY VALUE e vai ser mandado esse dado para o
+      //firebase
+      if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+        FirebaseCrashlytics.instance.setCustomKey("EXPECTION", e.toString());
+        FirebaseCrashlytics.instance
+            .setCustomKey("HTTP_STATUSCODE", e.statusCode);
+        FirebaseCrashlytics.instance.setCustomKey("HTTP_BODY", transaction);
+      }
+
+      //quando dar um ERROR ele vai criar um novo ERROR e
+      //avisa o FIREBASE que ocorreu um ERRO HTTP
+      FirebaseCrashlytics.instance.recordError(e, null);
       alerts.errorAlert(context, "Server does not respond in time");
       Navigator.pushReplacementNamed(context, "/contacts");
     }, test: (e) => e is TimeoutException).catchError(
       (e) {
+        if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+          FirebaseCrashlytics.instance.setCustomKey("EXPECTION", e.toString());
+          FirebaseCrashlytics.instance
+              .setCustomKey("HTTP_STATUSCODE", e.statusCode);
+          FirebaseCrashlytics.instance.setCustomKey("HTTP_BODY", transaction);
+          FirebaseCrashlytics.instance.recordError(e, null);
+        }
         alerts.errorAlert(context, e.message);
         Navigator.pushReplacementNamed(context, "/contacts");
       },
