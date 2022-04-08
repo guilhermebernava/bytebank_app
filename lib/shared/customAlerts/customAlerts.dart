@@ -10,6 +10,9 @@ class customAlerts {
   Future<dynamic> warningAlert(BuildContext context) {
     return CoolAlert.show(
       context: context,
+      onConfirmBtnTap: () {
+        Navigator.pushReplacementNamed(context, "/contacts");
+      },
       type: CoolAlertType.warning,
       title: "Ops...",
       text: "Something went wrong,\nTry Again Please!!",
@@ -25,6 +28,9 @@ class customAlerts {
   Future<dynamic> sucessAlert(BuildContext context) {
     return CoolAlert.show(
       context: context,
+      onConfirmBtnTap: () {
+        Navigator.pushReplacementNamed(context, "/contacts");
+      },
       type: CoolAlertType.success,
       title: "Sucess",
       text: "The contact was saved sucessfully !!",
@@ -32,13 +38,15 @@ class customAlerts {
       loopAnimation: false,
       animType: CoolAlertAnimType.scale,
       backgroundColor: AppColor.background,
-      autoCloseDuration: const Duration(seconds: 4),
     );
   }
 
   Future<dynamic> errorAlert(BuildContext context, String message) {
     return CoolAlert.show(
       context: context,
+      onConfirmBtnTap: () {
+        Navigator.pushReplacementNamed(context, "/contacts");
+      },
       type: CoolAlertType.error,
       title: "ERROR",
       text: message,
@@ -46,7 +54,6 @@ class customAlerts {
       loopAnimation: false,
       animType: CoolAlertAnimType.scale,
       backgroundColor: AppColor.background,
-      autoCloseDuration: const Duration(seconds: 4),
     );
   }
 }

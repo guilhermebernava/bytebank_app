@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:bytebank/Api/TransactionsInterception.dart';
 import 'package:bytebank/database/Daos/ContactDao.dart';
@@ -16,7 +17,7 @@ class CreateTransactionController {
   final contactDao = ContactDao();
   Client client = InterceptedClient.build(
     interceptors: [TransactionInterceptor()],
-    requestTimeout: const Duration(seconds: 10),
+    requestTimeout: const Duration(seconds: 3),
   );
 
   String? validateNull(String? value) =>
@@ -36,7 +37,7 @@ class CreateTransactionController {
     final transaction = TransactionModel(value: value, contact: contact);
 
     //faz a requesta na API, passando a URI dela, BODY, e os HEADERS
-    final response = await client.post(
+    await client.post(
       //link do ENDPOINT
       Uri.parse("http://192.168.15.26:8080/transactions"),
       //corpo da request, basicamente o que vai ser enviado para o backend
@@ -56,9 +57,11 @@ class CreateTransactionController {
       },
     ).catchError((e) {
       alerts.errorAlert(context, "Server does not respond in time");
+      Navigator.pushReplacementNamed(context, "/contacts");
     }, test: (e) => e is TimeoutException).catchError(
       (e) {
         alerts.errorAlert(context, e.message);
+        Navigator.pushReplacementNamed(context, "/contacts");
       },
       test: (error) => error is Exception,
     );
