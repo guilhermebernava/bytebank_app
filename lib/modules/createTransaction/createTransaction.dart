@@ -4,6 +4,7 @@ import 'package:bytebank/shared/customAlerts/customAlerts.dart';
 import 'package:bytebank/shared/models/contactModel.dart';
 import 'package:bytebank/shared/widgets/commonButton/commonButton.dart';
 import 'package:bytebank/shared/widgets/inputForm/inputForm.dart';
+import 'package:bytebank/shared/widgets/loadingMessage/loadingMessage.dart';
 import 'package:bytebank/shared/widgets/transactionAuth/transactionAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +22,7 @@ class CreateTransaction extends StatefulWidget {
 
 class _CreateTransactionState extends State<CreateTransaction> {
   final valueController = TextEditingController();
+  bool visible = false;
 
   @override
   Widget build(BuildContext context) {

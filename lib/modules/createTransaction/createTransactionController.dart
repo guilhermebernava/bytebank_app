@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bytebank/Api/TransactionsInterception.dart';
@@ -7,11 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 
+import '../../shared/customAlerts/customAlerts.dart';
+
 class CreateTransactionController {
+  final alerts = customAlerts();
   final formKey = GlobalKey<FormState>();
   final contactDao = ContactDao();
-  Client client =
-      InterceptedClient.build(interceptors: [TransactionInterceptor()]);
+  Client client = InterceptedClient.build(
+    interceptors: [TransactionInterceptor()],
+    requestTimeout: const Duration(seconds: 10),
+  );
 
   String? validateNull(String? value) =>
       value?.isEmpty ?? true ? "Value Can't be null" : null;
@@ -28,32 +34,36 @@ class CreateTransactionController {
 
     //cria uma transaction
     final transaction = TransactionModel(value: value, contact: contact);
-    try {
-      //faz a requesta na API, passando a URI dela, BODY, e os HEADERS
-      await client.post(
-        //link do ENDPOINT
-        Uri.parse("http://192.168.15.26:8080/transactions"),
-        //corpo da request, basicamente o que vai ser enviado para o backend
-        //lembrando que tem que ser CHAVE VALOR - JSON
-        body: jsonEncode(<String, dynamic>{
-          'value': transaction.value.toString(),
-          "contact": {
-            "name": contact.name,
-            "accountNumber": contact.accountNumber
-          },
-        }),
-        //HEADERS e onde vai ir informacoes de AUTHORIZE e coisas asssim
-        //que a API requisitar quando fazer alguma request.
-        headers: <String, String>{
-          'Content-type': 'application/json',
-          'password': password
-        },
-      ).timeout(const Duration(seconds: 2));
 
-      Navigator.pushReplacementNamed(context, "/transactions");
-    } catch (e) {
-      print(e);
-    }
+    //faz a requesta na API, passando a URI dela, BODY, e os HEADERS
+    final response = await client.post(
+      //link do ENDPOINT
+      Uri.parse("http://192.168.15.26:8080/transactions"),
+      //corpo da request, basicamente o que vai ser enviado para o backend
+      //lembrando que tem que ser CHAVE VALOR - JSON
+      body: jsonEncode(<String, dynamic>{
+        'value': transaction.value.toString(),
+        "contact": {
+          "name": contact.name,
+          "accountNumber": contact.accountNumber
+        },
+      }),
+      //HEADERS e onde vai ir informacoes de AUTHORIZE e coisas asssim
+      //que a API requisitar quando fazer alguma request.
+      headers: <String, String>{
+        'Content-type': 'application/json',
+        'password': password
+      },
+    ).catchError((e) {
+      alerts.errorAlert(context, "Server does not respond in time");
+    }, test: (e) => e is TimeoutException).catchError(
+      (e) {
+        alerts.errorAlert(context, e.message);
+      },
+      test: (error) => error is Exception,
+    );
+
+    Navigator.pushReplacementNamed(context, "/transactions");
   }
 
   bool create() {

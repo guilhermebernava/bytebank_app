@@ -35,4 +35,18 @@ class customAlerts {
       autoCloseDuration: const Duration(seconds: 4),
     );
   }
+
+  Future<dynamic> errorAlert(BuildContext context, String message) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.error,
+      title: "ERROR",
+      text: message,
+      confirmBtnColor: AppColor.greenLogo,
+      loopAnimation: false,
+      animType: CoolAlertAnimType.scale,
+      backgroundColor: AppColor.background,
+      autoCloseDuration: const Duration(seconds: 4),
+    );
+  }
 }

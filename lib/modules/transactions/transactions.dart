@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 class Transactions extends StatefulWidget {
   Transactions({Key? key}) : super(key: key);
-  final controller = TransactionController();
 
   @override
   State<Transactions> createState() => _TransactionsState();
@@ -15,10 +14,12 @@ class Transactions extends StatefulWidget {
 class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
+    final controller = TransactionController(context);
+
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-            onPressed: () => widget.controller.redirectToHome(context)),
+        leading:
+            BackButton(onPressed: () => controller.redirectToHome(context)),
         backgroundColor: Theme.of(context).primaryColor,
         title: const Center(
             child: Padding(
@@ -33,7 +34,7 @@ class _TransactionsState extends State<Transactions> {
           //ele alterar ele vai BUILDAR automaticamente os dados.
           child: ValueListenableBuilder<List<TransactionModel>>(
               //dado que vai ser OUVIDO para ele fazer essa mudança.
-              valueListenable: widget.controller.transactionsNotifier,
+              valueListenable: controller.transactionsNotifier,
               // o primeiro parametro é o CONTEXT
               // segundo parametro e o GET do dado sendo ouvindo 'VALUE NOTIFIER'
               // o return desse BUILDER e o WIDGET em si.

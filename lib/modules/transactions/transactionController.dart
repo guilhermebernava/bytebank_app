@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bytebank/Api/TransactionsInterception.dart';
+import 'package:bytebank/shared/customAlerts/customAlerts.dart';
 import 'package:bytebank/shared/models/transactionModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -10,8 +11,11 @@ import 'package:http_interceptor/http/intercepted_client.dart';
 import '../../shared/models/contactModel.dart';
 
 class TransactionController {
-  Client client =
-      InterceptedClient.build(interceptors: [TransactionInterceptor()]);
+  final alerts = customAlerts();
+  Client client = InterceptedClient.build(
+    interceptors: [TransactionInterceptor()],
+    requestTimeout: const Duration(seconds: 10),
+  );
 
   final transactionsNotifier =
       ValueNotifier<List<TransactionModel>>(<TransactionModel>[]);
@@ -23,19 +27,24 @@ class TransactionController {
     Navigator.pushReplacementNamed(context, "/home");
   }
 
-  TransactionController() {
-    getTransactions();
+  TransactionController(BuildContext context) {
+    getTransactions(context);
   }
 
-  Future<List<TransactionModel>> getTransactions() async {
+  Future<List<TransactionModel>> getTransactions(BuildContext context) async {
     //faz a REQUEST dos dados atraves do GET
     try {
       //precisa passar a URI do ENDPOINT
       //pode se passar HEADERS tambem igualmente ao POST
       //  NAO POSSUI BODY
-      final response = await client
-          .get(Uri.parse("http://192.168.15.26:8080/transactions"))
-          .timeout(const Duration(seconds: 5));
+      final response =
+          await client.get(Uri.parse("http://192.168.15.26:8080/transactions"))
+              //capturamos os erros que tiverem dentro dessa FUTURE
+              .catchError((e) {
+        //aqui fazemos algo quando capturamos o erro
+        //nesse caso mandamos uma mensagem de erro na tela
+        alerts.errorAlert(context, e.message);
+      });
 
       //cria uma lista de MAP da resposta do GET
       //map e igualmente um JSON de CHAVE VALOR 0
